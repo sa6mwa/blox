@@ -246,6 +246,34 @@ func (b *Blox) PutText(text string) *Blox {
 	return b
 }
 
+func (b *Blox) PutTextRightAligned(text string) *Blox {
+	if b.Rows == 0 || b.Columns == 0 {
+		return b
+	}
+	l := MaximumLineLength(text)
+	alignedX := 0
+	cropBeginningBy := 0
+	if l > b.Columns {
+		cropBeginningBy = l - b.Columns
+	} else {
+		alignedX = b.Columns - l
+	}
+	b.MoveX(alignedX)
+	s := bufio.NewScanner(strings.NewReader(text))
+	for s.Scan() {
+		line := []rune(s.Text())
+		if cropBeginningBy > 0 {
+			if len(line) > cropBeginningBy {
+				line = line[cropBeginningBy:]
+			} else {
+				line = line[0:0]
+			}
+		}
+		b.PutLine(line).Move(alignedX, b.Cursor.Y+b.LineSpacing)
+	}
+	return b
+}
+
 func (b *Blox) FprintCanvas(o *os.File) *Blox {
 	_, err := o.Write([]byte(b.String()))
 	if err != nil {

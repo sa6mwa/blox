@@ -257,6 +257,37 @@ func ExampleBlox_PutText_second() {
 	// PQRST UVWXY ZABCD
 }
 
+func ExampleBlox_PutTextRightAligned() {
+	b := blox.New().Trim().SetColumnsAndRows(80, 24)
+
+	// blox.LineBreak is \n on Linux/Darwin and \r\n on Windows.
+
+	text := "Lorem ipsum dolor sit amet consectetur adipiscing elit torquent ante tortor dui" + blox.LineBreak
+	text += "augue, dictumst convallis eget tempor pharetra lectus magnis lacinia lacus eu" + blox.LineBreak
+	text += "nostra. Sagittis dolor mattis laoreet justo mollis est varius etiam nisl, sit" + blox.LineBreak
+	text += "eleifend nullam magna aptent erat vitae. Nullam suspendisse quis volutpat luctus" + blox.LineBreak
+	text += "non a cursus dui urna, facilisis ipsum dapibus etiam odio lacus feugiat neque." + blox.LineBreak
+	text += "Primis pharetra cursus ultrices vel curabitur duis taciti semper, tortor nisl" + blox.LineBreak
+	text += "urna turpis mauris maecenas ac diam, posuere morbi mi class tincidunt cum" + blox.LineBreak
+	text += "suspendisse." + blox.LineBreak
+
+	box := "+----------------------------+" + blox.LineBreak
+	box += "|       A BOX WITH TEXT      |" + blox.LineBreak
+	box += "+----------------------------+" + blox.LineBreak
+
+	b.PutText(text).MoveY(4).PutTextRightAligned(box).PrintCanvas()
+
+	// Output:
+	// Lorem ipsum dolor sit amet consectetur adipiscing elit torquent ante tortor dui
+	// augue, dictumst convallis eget tempor pharetra lectus magnis lacinia lacus eu
+	// nostra. Sagittis dolor mattis laoreet justo mollis est varius etiam nisl, sit
+	// eleifend nullam magna aptent erat vitae. Nullam suspendisse quis volutpat luctus
+	// non a cursus dui urna, facilisis ipsum dapibus eti+----------------------------+
+	// Primis pharetra cursus ultrices vel curabitur duis|       A BOX WITH TEXT      |
+	// urna turpis mauris maecenas ac diam, posuere morbi+----------------------------+
+	// suspendisse.
+}
+
 func ExampleBlox_PrintCanvas() {
 	b := blox.New().SetColumnsAndRows(80, 24).SetTrimRightSpaces(true).SetTrimFinalEmptyLines(true)
 
