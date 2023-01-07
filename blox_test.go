@@ -203,7 +203,7 @@ func TestPutText(t *testing.T) {
 	assert.Equal(t, text2, b.String())
 }
 
-func ExamplePutText() {
+func ExampleBlox_PutText() {
 	b := blox.New().Trim().SetColumnsAndRows(80, 24)
 
 	text := "ABCDE FGHIJ KLMNO" + blox.LineBreak
@@ -224,7 +224,7 @@ func ExamplePutText() {
 	// PQRST UVWXY ZABCD
 }
 
-func ExamplePutText_second() {
+func ExampleBlox_PutText_second() {
 	b := blox.New().Trim().SetColumnsAndRows(80, 24)
 
 	text := "ABCDE FGHIJ KLMNO" + blox.LineBreak
@@ -257,7 +257,7 @@ func ExamplePutText_second() {
 	// PQRST UVWXY ZABCD
 }
 
-func ExamplePrintCanvas() {
+func ExampleBlox_PrintCanvas() {
 	b := blox.New().SetColumnsAndRows(80, 24).SetTrimRightSpaces(true).SetTrimFinalEmptyLines(true)
 
 	text := "Lorem ipsum dolor sit amet consectetur adipiscing elit torquent ante tortor dui" + blox.LineBreak
@@ -288,7 +288,7 @@ func ExamplePrintCanvas() {
 	// suspendisse.
 }
 
-func ExampleFprintCanvas() {
+func ExampleBlox_FprintCanvas() {
 	b := blox.New().SetColumnsAndRows(80, 24).Trim()
 
 	text := "Lorem ipsum dolor sit amet consectetur adipiscing elit torquent ante tortor dui" + blox.LineBreak
@@ -318,7 +318,7 @@ func ExampleFprintCanvas() {
 	// suspendisse.           :
 }
 
-func ExampleDrawSeparator() {
+func ExampleBlox_DrawSeparator() {
 	b := blox.New().Trim().SetColumnsAndRows(80, 15)
 
 	text := "Lorem ipsum dolor sit amet consectetur adipiscing elit torquent ante tortor dui" + blox.LineBreak
@@ -345,7 +345,7 @@ func ExampleDrawSeparator() {
 	// Final line.
 }
 
-func ExampleDrawSplit() {
+func ExampleBlox_DrawSplit() {
 	b := blox.New().Trim().SetColumnsAndRows(80, 9)
 	text := "Lorem ipsum dolor sit amet consectetur adipiscing elit torquent ante tortor dui" + blox.LineBreak
 	text += "augue, dictumst convallis eget tempor pharetra lectus magnis lacinia lacus eu" + blox.LineBreak

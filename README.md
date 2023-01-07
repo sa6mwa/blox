@@ -3,7 +3,7 @@
 Go package to block-paste text in a character raster buffer and print without
 wrapping or as lines.
 
-# Example
+## Example
 
 ```go
 package main
@@ -35,7 +35,7 @@ func main() {
 }
 ```
 
-## Output
+### Output
 
 ```text
 CRYPTO : ABCDE FGHIJ KLMNO
@@ -197,6 +197,51 @@ func (b *Blox) DrawSeparator(char ...rune) *Blox
 
 DrawSeparator draws a horizontal line with hyphens \(\-\) at the current row. You can change the default rune with the optional char.
 
+<details><summary>Example</summary>
+<p>
+
+```go
+package main
+
+import (
+	"github.com/sa6mwa/blox"
+)
+
+func main() {
+	b := blox.New().Trim().SetColumnsAndRows(80, 15)
+
+	text := "Lorem ipsum dolor sit amet consectetur adipiscing elit torquent ante tortor dui" + blox.LineBreak
+	text += "augue, dictumst convallis eget tempor pharetra lectus magnis lacinia lacus eu" + blox.LineBreak
+	text += "nostra. Sagittis dolor mattis laoreet justo mollis est varius etiam nisl, sit" + blox.LineBreak
+	text += "eleifend nullam magna aptent erat vitae. Nullam suspendisse quis volutpat luctus" + blox.LineBreak
+	text += "non a cursus dui urna, facilisis ipsum dapibus etiam odio lacus feugiat neque." + blox.LineBreak
+	text += "Primis pharetra cursus ultrices vel curabitur duis taciti semper, tortor nisl" + blox.LineBreak
+	text += "urna turpis mauris maecenas ac diam, posuere morbi mi class tincidunt cum" + blox.LineBreak
+	text += "suspendisse." // With or without final new line.
+
+	b.PutText(text).DrawSeparator().PutText("Final line.").PrintCanvas()
+
+}
+```
+
+#### Output
+
+```
+Lorem ipsum dolor sit amet consectetur adipiscing elit torquent ante tortor dui
+augue, dictumst convallis eget tempor pharetra lectus magnis lacinia lacus eu
+nostra. Sagittis dolor mattis laoreet justo mollis est varius etiam nisl, sit
+eleifend nullam magna aptent erat vitae. Nullam suspendisse quis volutpat luctus
+non a cursus dui urna, facilisis ipsum dapibus etiam odio lacus feugiat neque.
+Primis pharetra cursus ultrices vel curabitur duis taciti semper, tortor nisl
+urna turpis mauris maecenas ac diam, posuere morbi mi class tincidunt cum
+suspendisse.
+--------------------------------------------------------------------------------
+Final line.
+```
+
+</p>
+</details>
+
 ### func \(\*Blox\) DrawSplit
 
 ```go
@@ -204,6 +249,52 @@ func (b *Blox) DrawSplit(char ...rune) *Blox
 ```
 
 DrawSplit draws a vertical line with pipes \(|\) at the current column from the top row to the bottom row of the canvas. You can change the default rune with the optional char.
+
+<details><summary>Example</summary>
+<p>
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/sa6mwa/blox"
+)
+
+func main() {
+	b := blox.New().Trim().SetColumnsAndRows(80, 9)
+	text := "Lorem ipsum dolor sit amet consectetur adipiscing elit torquent ante tortor dui" + blox.LineBreak
+	text += "augue, dictumst convallis eget tempor pharetra lectus magnis lacinia lacus eu" + blox.LineBreak
+	text += "nostra. Sagittis dolor mattis laoreet justo mollis est varius etiam nisl, sit" + blox.LineBreak
+	text += "eleifend nullam magna aptent erat vitae. Nullam suspendisse quis volutpat luctus" + blox.LineBreak
+	text += "non a cursus dui urna, facilisis ipsum dapibus etiam odio lacus feugiat neque." + blox.LineBreak
+	text += "Primis pharetra cursus ultrices vel curabitur duis taciti semper, tortor nisl" + blox.LineBreak
+	text += "urna turpis mauris maecenas ac diam, posuere morbi mi class tincidunt cum" + blox.LineBreak
+	text += "suspendisse." // With or without final new line.
+
+	str := b.PutText(text).DrawSeparator().MoveX(20).DrawSplit().String()
+	fmt.Print(str)
+
+}
+```
+
+#### Output
+
+```
+Lorem ipsum dolor si| amet consectetur adipiscing elit torquent ante tortor dui
+augue, dictumst conv|llis eget tempor pharetra lectus magnis lacinia lacus eu
+nostra. Sagittis dol|r mattis laoreet justo mollis est varius etiam nisl, sit
+eleifend nullam magn| aptent erat vitae. Nullam suspendisse quis volutpat luctus
+non a cursus dui urn|, facilisis ipsum dapibus etiam odio lacus feugiat neque.
+Primis pharetra curs|s ultrices vel curabitur duis taciti semper, tortor nisl
+urna turpis mauris m|ecenas ac diam, posuere morbi mi class tincidunt cum
+suspendisse.        |
+--------------------|-----------------------------------------------------------
+```
+
+</p>
+</details>
 
 ### func \(\*Blox\) DrawVerticalLine
 
@@ -218,6 +309,56 @@ DrawVerticalLine draws pipes \(|\) vertically between two Y positions at the cur
 ```go
 func (b *Blox) FprintCanvas(o *os.File) *Blox
 ```
+
+<details><summary>Example</summary>
+<p>
+
+```go
+package main
+
+import (
+	"os"
+
+	"github.com/sa6mwa/blox"
+)
+
+func main() {
+	b := blox.New().SetColumnsAndRows(80, 24).Trim()
+
+	text := "Lorem ipsum dolor sit amet consectetur adipiscing elit torquent ante tortor dui" + blox.LineBreak
+	text += "augue, dictumst convallis eget tempor pharetra lectus magnis lacinia lacus eu" + blox.LineBreak
+	text += "nostra. Sagittis dolor mattis laoreet justo mollis est varius etiam nisl, sit" + blox.LineBreak
+	text += "eleifend nullam magna aptent erat vitae. Nullam suspendisse quis volutpat luctus" + blox.LineBreak
+	text += "non a cursus dui urna, facilisis ipsum dapibus etiam odio lacus feugiat neque." + blox.LineBreak
+	text += "Primis pharetra cursus ultrices vel curabitur duis taciti semper, tortor nisl" + blox.LineBreak
+	text += "urna turpis mauris maecenas ac diam, posuere morbi mi class tincidunt cum" + blox.LineBreak
+	text += "suspendisse." + blox.LineBreak
+
+	box := "+----------------------------+" + blox.LineBreak
+	box += "|       A BOX WITH TEXT      |" + blox.LineBreak
+	box += "+----------------------------+" + blox.LineBreak
+
+	b.PutText(text).MoveX(23).DrawVerticalLine(0, 7, ':').
+		Move(13, 3).PutText(box).FprintCanvas(os.Stdout).Move(0, 0)
+
+}
+```
+
+#### Output
+
+```
+Lorem ipsum dolor sit a:et consectetur adipiscing elit torquent ante tortor dui
+augue, dictumst convall:s eget tempor pharetra lectus magnis lacinia lacus eu
+nostra. Sagittis dolor :attis laoreet justo mollis est varius etiam nisl, sit
+eleifend null+----------------------------+llam suspendisse quis volutpat luctus
+non a cursus |       A BOX WITH TEXT      |bus etiam odio lacus feugiat neque.
+Primis pharet+----------------------------+ur duis taciti semper, tortor nisl
+urna turpis mauris maec:nas ac diam, posuere morbi mi class tincidunt cum
+suspendisse.           :
+```
+
+</p>
+</details>
 
 ### func \(\*Blox\) Index
 
@@ -301,6 +442,55 @@ Restore \(pop\) last saved \(pushed\) cursor position from the cursor stack.
 func (b *Blox) PrintCanvas() *Blox
 ```
 
+<details><summary>Example</summary>
+<p>
+
+```go
+package main
+
+import (
+	"github.com/sa6mwa/blox"
+)
+
+func main() {
+	b := blox.New().SetColumnsAndRows(80, 24).SetTrimRightSpaces(true).SetTrimFinalEmptyLines(true)
+
+	text := "Lorem ipsum dolor sit amet consectetur adipiscing elit torquent ante tortor dui" + blox.LineBreak
+	text += "augue, dictumst convallis eget tempor pharetra lectus magnis lacinia lacus eu" + blox.LineBreak
+	text += "nostra. Sagittis dolor mattis laoreet justo mollis est varius etiam nisl, sit" + blox.LineBreak
+	text += "eleifend nullam magna aptent erat vitae. Nullam suspendisse quis volutpat luctus" + blox.LineBreak
+	text += "non a cursus dui urna, facilisis ipsum dapibus etiam odio lacus feugiat neque." + blox.LineBreak
+	text += "Primis pharetra cursus ultrices vel curabitur duis taciti semper, tortor nisl" + blox.LineBreak
+	text += "urna turpis mauris maecenas ac diam, posuere morbi mi class tincidunt cum" + blox.LineBreak
+	text += "suspendisse." + blox.LineBreak
+
+	box := "+----------------------------+" + blox.LineBreak
+	box += "|       A BOX WITH TEXT      |" + blox.LineBreak
+	box += "+----------------------------+" + blox.LineBreak
+
+	b.PutText(text).Move(13, 3).PutText(box)
+
+	b.PrintCanvas()
+
+}
+```
+
+#### Output
+
+```
+Lorem ipsum dolor sit amet consectetur adipiscing elit torquent ante tortor dui
+augue, dictumst convallis eget tempor pharetra lectus magnis lacinia lacus eu
+nostra. Sagittis dolor mattis laoreet justo mollis est varius etiam nisl, sit
+eleifend null+----------------------------+llam suspendisse quis volutpat luctus
+non a cursus |       A BOX WITH TEXT      |bus etiam odio lacus feugiat neque.
+Primis pharet+----------------------------+ur duis taciti semper, tortor nisl
+urna turpis mauris maecenas ac diam, posuere morbi mi class tincidunt cum
+suspendisse.
+```
+
+</p>
+</details>
+
 ### func \(\*Blox\) PushPos
 
 ```go
@@ -332,6 +522,98 @@ func (b *Blox) PutLines(lines ...string) *Blox
 ```go
 func (b *Blox) PutText(text string) *Blox
 ```
+
+<details><summary>Example</summary>
+<p>
+
+```go
+package main
+
+import (
+	"github.com/sa6mwa/blox"
+)
+
+func main() {
+	b := blox.New().Trim().SetColumnsAndRows(80, 24)
+
+	text := "ABCDE FGHIJ KLMNO" + blox.LineBreak
+	text += "PQRST UVWXY ZABCD" + blox.LineBreak
+
+	heading := "CRYPTO" + blox.LineBreak
+	heading += "GROUPS"
+
+	b.PutText(heading).DrawHorizontalLine(0, 6).DrawVerticalLine(0, 1, ':').
+		PutChar('+').MoveDown().MoveX(0).PutText(text).
+		Move(9, 0).PutText(text).PrintCanvas()
+
+}
+```
+
+#### Output
+
+```
+CRYPTO : ABCDE FGHIJ KLMNO
+GROUPS : PQRST UVWXY ZABCD
+-------+
+ABCDE FGHIJ KLMNO
+PQRST UVWXY ZABCD
+```
+
+</p>
+</details>
+
+<details><summary>Example (Second)</summary>
+<p>
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/sa6mwa/blox"
+)
+
+func main() {
+	b := blox.New().Trim().SetColumnsAndRows(80, 24)
+
+	text := "ABCDE FGHIJ KLMNO" + blox.LineBreak
+	text += "PQRST UVWXY ZABCD" + blox.LineBreak
+
+	heading := "CRYPTO" + blox.LineBreak
+	heading += "GROUPS"
+
+	str := b.PutText(heading).DrawHorizontalLine(0, 6).DrawVerticalLine(0, 1, ':').
+		PutChar('+').MoveDown().MoveX(0).PutText(text).
+		Move(9, 0).PutText(text).Join(blox.LineBreak)
+
+	strEndingInNewLine := b.String()
+
+	fmt.Println(str)
+	fmt.Println("--")
+	fmt.Print(strEndingInNewLine)
+
+}
+```
+
+#### Output
+
+```
+CRYPTO : ABCDE FGHIJ KLMNO
+GROUPS : PQRST UVWXY ZABCD
+-------+
+ABCDE FGHIJ KLMNO
+PQRST UVWXY ZABCD
+--
+CRYPTO : ABCDE FGHIJ KLMNO
+GROUPS : PQRST UVWXY ZABCD
+-------+
+ABCDE FGHIJ KLMNO
+PQRST UVWXY ZABCD
+```
+
+</p>
+</details>
 
 ### func \(\*Blox\) ResizeCanvas
 
