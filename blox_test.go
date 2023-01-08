@@ -3,6 +3,7 @@ package blox_test
 import (
 	"fmt"
 	"os"
+	"strings"
 	"testing"
 
 	"github.com/sa6mwa/blox"
@@ -446,4 +447,123 @@ func ExampleCutLineShort() {
 	fmt.Println(line)
 	// Output:
 	// Hello world…
+}
+
+// WrapString is (C) 2014 Mitchell Hashimoto https://github.com/mitchellh
+// Imported from https://github.com/mitchellh/go-wordwrap
+func TestWrapString(t *testing.T) {
+	cases := []struct {
+		Input, Output string
+		Lim           uint
+	}{
+		// A simple word passes through.
+		{
+			"foo",
+			"foo",
+			4,
+		},
+		// A single word that is too long passes through.
+		// We do not break words.
+		{
+			"foobarbaz",
+			"foobarbaz",
+			4,
+		},
+		// Lines are broken at whitespace.
+		{
+			"foo bar baz",
+			"foo\nbar\nbaz",
+			4,
+		},
+		// Lines are broken at whitespace, even if words
+		// are too long. We do not break words.
+		{
+			"foo bars bazzes",
+			"foo\nbars\nbazzes",
+			4,
+		},
+		// A word that would run beyond the width is wrapped.
+		{
+			"fo sop",
+			"fo\nsop",
+			4,
+		},
+		// Do not break on non-breaking space.
+		{
+			"foo bar\u00A0baz",
+			"foo\nbar\u00A0baz",
+			10,
+		},
+		// Whitespace that trails a line and fits the width
+		// passes through, as does whitespace prefixing an
+		// explicit line break. A tab counts as one character.
+		{
+			"foo\nb\t r\n baz",
+			"foo\nb\t r\n baz",
+			4,
+		},
+		// Trailing whitespace is removed if it doesn't fit the width.
+		// Runs of whitespace on which a line is broken are removed.
+		{
+			"foo    \nb   ar   ",
+			"foo\nb\nar",
+			4,
+		},
+		// An explicit line break at the end of the input is preserved.
+		{
+			"foo bar baz\n",
+			"foo\nbar\nbaz\n",
+			4,
+		},
+		// Explicit break are always preserved.
+		{
+			"\nfoo bar\n\n\nbaz\n",
+			"\nfoo\nbar\n\n\nbaz\n",
+			4,
+		},
+		// Complete example:
+		{
+			" This is a list: \n\n\t* foo\n\t* bar\n\n\n\t* baz  \nBAM    ",
+			" This\nis a\nlist: \n\n\t* foo\n\t* bar\n\n\n\t* baz\nBAM",
+			6,
+		},
+		// Multi-byte characters
+		{
+			strings.Repeat("\u2584 ", 4),
+			"\u2584 \u2584" + "\n" +
+				strings.Repeat("\u2584 ", 2),
+			4,
+		},
+	}
+
+	for i, tc := range cases {
+		actual := blox.WrapString(tc.Input, tc.Lim)
+		if actual != tc.Output {
+			t.Fatalf("Case %d Input:\n\n`%s`\n\nExpected Output:\n\n`%s`\n\nActual Output:\n\n`%s`", i, tc.Input, tc.Output, actual)
+		}
+	}
+}
+
+func ExampleWrapString() {
+	s := blox.WrapString(blox.WithoutLineBreaks(loremIpsum), 50)
+	fmt.Print(s)
+	// Output:
+	// Lorem ipsum dolor sit amet consectetur adipiscing
+	// elit torquent ante tortor duiaugue, dictumst
+	// convallis eget tempor pharetra lectus magnis
+	// lacinia lacus eunostra. Sagittis dolor mattis
+	// laoreet justo mollis est varius etiam nisl,
+	// siteleifend nullam magna aptent erat vitae. Nullam
+	// suspendisse quis volutpat luctusnon a cursus dui
+	// urna, facilisis ipsum dapibus etiam odio lacus
+	// feugiat neque.Primis pharetra cursus ultrices vel
+	// curabitur duis taciti semper, tortor nislurna
+	// turpis mauris maecenas ac diam, posuere morbi mi
+	// class tincidunt cumsuspendisse.
+}
+
+func TestWithoutLineBreaks(t *testing.T) {
+	s := blox.WithoutLineBreaks(loremIpsum)
+	l := blox.LineCount(s)
+	assert.Equal(t, 1, l, "should only render 1 line")
 }
