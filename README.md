@@ -62,6 +62,8 @@ PQRST UVWXY ZABCD
 
 - [Constants](<#constants>)
 - [Variables](<#variables>)
+- [func CutLineShort(line string, maxLen int, addThreeDots bool) string](<#func-cutlineshort>)
+- [func CutLinesShort(text string, maxLen int, trimTrailingSpace bool) string](<#func-cutlinesshort>)
 - [func LineCount(text string) int](<#func-linecount>)
 - [func MaximumLineLength(text string) int](<#func-maximumlinelength>)
 - [func RowAndColumnCount(text string) (int, int)](<#func-rowandcolumncount>)
@@ -127,6 +129,93 @@ var (
     InitialTrimFinalEmptyLines bool = false
 )
 ```
+
+## func CutLineShort
+
+```go
+func CutLineShort(line string, maxLen int, addThreeDots bool) string
+```
+
+CutLineShort cuts line after maxLen adding dots if addThreeDots is true. Returns a shortened or the original string.
+
+<details><summary>Example</summary>
+<p>
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/sa6mwa/blox"
+)
+
+func main() {
+	line := "Hello world, I am Blox."
+	line = blox.CutLineShort(line, 12, true)
+	fmt.Println(line)
+}
+```
+
+#### Output
+
+```
+Hello world…
+```
+
+</p>
+</details>
+
+## func CutLinesShort
+
+```go
+func CutLinesShort(text string, maxLen int, trimTrailingSpace bool) string
+```
+
+CutLinesShort cuts several lines to maxLen and return the new text. Will trim trailing space if trimTrailingSpace is true.
+
+<details><summary>Example</summary>
+<p>
+
+```go
+package main
+
+import (
+	"fmt"
+
+	"github.com/sa6mwa/blox"
+)
+
+const loremIpsum string = "Lorem ipsum dolor sit amet consectetur adipiscing elit torquent ante tortor dui" + blox.LineBreak +
+	"augue, dictumst convallis eget tempor pharetra lectus magnis lacinia lacus eu" + blox.LineBreak +
+	"nostra. Sagittis dolor mattis laoreet justo mollis est varius etiam nisl, sit" + blox.LineBreak +
+	"eleifend nullam magna aptent erat vitae. Nullam suspendisse quis volutpat luctus" + blox.LineBreak +
+	"non a cursus dui urna, facilisis ipsum dapibus etiam odio lacus feugiat neque." + blox.LineBreak +
+	"Primis pharetra cursus ultrices vel curabitur duis taciti semper, tortor nisl" + blox.LineBreak +
+	"urna turpis mauris maecenas ac diam, posuere morbi mi class tincidunt cum" + blox.LineBreak +
+	"suspendisse."
+
+func main() {
+	text := loremIpsum
+	fmt.Print(blox.CutLinesShort(text, 13, true))
+}
+```
+
+#### Output
+
+```
+Lorem ipsum d
+augue, dictum
+nostra. Sagit
+eleifend null
+non a cursus
+Primis pharet
+urna turpis m
+suspendisse.
+```
+
+</p>
+</details>
 
 ## func LineCount
 

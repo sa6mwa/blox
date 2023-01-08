@@ -425,3 +425,25 @@ func TestMaximumLineLength(t *testing.T) {
 	assert.Equal(t, 9, blox.MaximumLineLength("HELLO\nBEAUTIFUL\nWORLD.\n"))
 	assert.Equal(t, 80, blox.MaximumLineLength(text))
 }
+
+func ExampleCutLinesShort() {
+	text := loremIpsum
+	fmt.Print(blox.CutLinesShort(text, 13, true))
+	// Output:
+	// Lorem ipsum d
+	// augue, dictum
+	// nostra. Sagit
+	// eleifend null
+	// non a cursus
+	// Primis pharet
+	// urna turpis m
+	// suspendisse.
+}
+
+func ExampleCutLineShort() {
+	line := "Hello world, I am Blox."
+	line = blox.CutLineShort(line, 12, true)
+	fmt.Println(line)
+	// Output:
+	// Hello world…
+}

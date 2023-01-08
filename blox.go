@@ -511,3 +511,42 @@ func MaximumLineLength(text string) int {
 	}
 	return lineLength
 }
+
+// CutLinesShort cuts several lines to maxLen and return the new text. Will trim
+// trailing space if trimTrailingSpace is true.
+func CutLinesShort(text string, maxLen int, trimTrailingSpace bool) string {
+	newText := make([]rune, 0, utf8.RuneCountInString(text))
+	s := bufio.NewScanner(strings.NewReader(text))
+	for s.Scan() {
+		line := s.Text()
+		if trimTrailingSpace {
+			line = strings.TrimRightFunc(CutLineShort(line, maxLen, false), unicode.IsSpace)
+		} else {
+			line = CutLineShort(line, maxLen, false)
+		}
+		newText = append(newText, []rune(line)...)
+		newText = append(newText, []rune(LineBreak)...)
+	}
+	return string(newText)
+}
+
+// CutLineShort cuts line after maxLen adding dots if addThreeDots is true.
+// Returns a shortened or the original string.
+func CutLineShort(line string, maxLen int, addThreeDots bool) string {
+	threeDots := '…'
+	if utf8.RuneCountInString(line) > maxLen {
+		l := []rune(line)
+		c := len(l)
+		if c == 0 || c < maxLen {
+			return line
+		}
+		l = l[:maxLen]
+		if addThreeDots {
+			if len(l) > 0 {
+				l[len(l)-1] = threeDots
+			}
+		}
+		return string(l)
+	}
+	return line
+}
