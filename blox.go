@@ -552,9 +552,26 @@ func CutLineShort(line string, maxLen int, addThreeDots bool) string {
 	return line
 }
 
-// WithoutLineBreaks removes all line-feeds from s and returns a new string.
+// WithoutLineBreaks removes all line-feeds (well, not all) from s and returns a
+// new string. See ReplaceLineBreaks instead.
 func WithoutLineBreaks(s string) string {
 	r := strings.NewReplacer("\r", "", "\n", "")
+	return r.Replace(s)
+}
+
+// ReplaceLineBreaks replaces various breaks from s with replacement and returns
+// a new string.
+func ReplaceLineBreaks(s string, replacement string) string {
+	r := strings.NewReplacer(
+		"\r\n", replacement,
+		"\r", replacement,
+		"\n", replacement,
+		"\v", replacement,
+		"\f", replacement,
+		"\u0085", replacement,
+		"\u2028", replacement,
+		"\u2029", replacement,
+	)
 	return r.Replace(s)
 }
 

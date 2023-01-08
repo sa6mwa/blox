@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"unicode/utf8"
 
 	"github.com/sa6mwa/blox"
 	"github.com/stretchr/testify/assert"
@@ -546,7 +547,8 @@ func TestWrapString(t *testing.T) {
 
 func ExampleWrapString() {
 	s := blox.WrapString(blox.WithoutLineBreaks(loremIpsum), 50)
-	fmt.Print(s)
+	// WrapString will not add a final newline.
+	fmt.Println(s)
 	// Output:
 	// Lorem ipsum dolor sit amet consectetur adipiscing
 	// elit torquent ante tortor duiaugue, dictumst
@@ -566,4 +568,20 @@ func TestWithoutLineBreaks(t *testing.T) {
 	s := blox.WithoutLineBreaks(loremIpsum)
 	l := blox.LineCount(s)
 	assert.Equal(t, 1, l, "should only render 1 line")
+}
+
+func TestReplaceLineBreaks(t *testing.T) {
+	l := "String\r\nwith line-breaks\nof various\vkinds.\n"
+	s := blox.ReplaceLineBreaks(l, " ")
+	c := blox.LineCount(s)
+	assert.Equal(t, 1, c)
+	assert.Equal(t, 42, utf8.RuneCountInString(s))
+}
+
+func ExampleReplaceLineBreaks() {
+	l := "String\r\nwith line-breaks\nof various\vkinds.\n"
+	s := blox.ReplaceLineBreaks(l, " ")
+	fmt.Println(s)
+	// Output:
+	// String with line-breaks of various kinds.
 }
