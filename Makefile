@@ -21,4 +21,4 @@ clean:
 	rm -f demo
 
 upgrade: go.mod
-	go get -u
+	go get -u all
