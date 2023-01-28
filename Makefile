@@ -21,4 +21,6 @@ clean:
 	rm -f demo
 
 upgrade: go.mod
-	go get -u all
+	go get -v -u all
+	go mod tidy -v
+	go mod vendor -v
